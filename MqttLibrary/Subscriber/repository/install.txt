@@ -1,0 +1,6 @@
+﻿install-package Microsoft.EntityFrameworkCore
+install-package Microsoft.EntityFrameworkCore.Tools
+install-package Pomelo.EntityFrameworkCore.MySql
+
+add-migration innizialize
+update-database
