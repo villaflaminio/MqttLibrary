@@ -10,17 +10,18 @@ namespace MqttSubscriber.repository
 {
     internal class Repository : DbContext
     {
+        public DbSet<MessageMqtt> Messages { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            base.OnConfiguring(optionsBuilder);
-
-            // connect to mysql with connection string from app settings
-            var connectionString = "server=localhost; port=3307; database=mqtt; user=root; password=flaminio; Persist Security Info=False; Connect Timeout=300"; //Configuration.GetConnectionString("ConnectionStringDatabase");
-            optionsBuilder.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
-
-            // var connectionString = "server=localhost; port=3307; database=repository; user=root; password=flaminio; Persist Security Info=False; Connect Timeout=300";
+            optionsBuilder.UseSqlite("Data Source=Mqtt.db;");
         }
-        public DbSet<MessageMqtt> Messages { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<MessageMqtt>().ToTable("MessageMqtt");
+            
+        }
 
     }
 }

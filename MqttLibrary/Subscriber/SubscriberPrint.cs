@@ -17,7 +17,7 @@ namespace MqttLibrary.Subscriber
             var client = mqttFactory.CreateMqttClient();
             var otions = new MqttClientOptionsBuilder()
                 .WithClientId(Guid.NewGuid().ToString())
-                .WithTcpServer("localhost", 1884)
+                .WithTcpServer("broker.hivemq.com", 1883)
                 .WithCleanSession()
                 .Build();
 
@@ -45,8 +45,6 @@ namespace MqttLibrary.Subscriber
                 //Console.WriteLine($"Ricevuto: {Encoding.UTF8.GetString(e.ApplicationMessage.Payload)}");
             });
             client.ConnectAsync(otions);
-
-
 
         }
     }

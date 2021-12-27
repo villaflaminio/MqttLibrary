@@ -19,13 +19,13 @@ namespace MqttLibrary.Publisher
             var client = mqttFactory.CreateMqttClient();
             var otions = new MqttClientOptionsBuilder()
                 .WithClientId(Guid.NewGuid().ToString())
-                .WithTcpServer("localhost", 1884)
+                .WithTcpServer("broker.hivemq.com", 1883)
                 .WithCleanSession()
                 .Build();
 
             client.UseConnectedHandler(e =>
             {
-                Console.WriteLine("connected to broker");
+                Console.WriteLine("publisher connected to broker");
             });
             client.UseDisconnectedHandler(e =>
             {
@@ -34,14 +34,19 @@ namespace MqttLibrary.Publisher
 
             client.ConnectAsync(otions);
 
+            while (!client.IsConnected)
+            {
+                Task.Delay(10).Wait();
+                Console.WriteLine("Aspettando il broker");
+            }
 
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < 5; i++)
             {
                 Console.WriteLine("Invio " + i);
                 await PublishMessageAsync(client, i);
                 Task.Delay(500).Wait();
 
-                PublishMessageAsync(client, i);
+              // PublishMessageAsync(client, i);
             }
 
 

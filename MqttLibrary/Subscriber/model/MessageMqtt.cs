@@ -11,7 +11,6 @@ namespace MqttSubscriber.model
         public int Id { get; set; }
         public string Payload { get; set; }
         public string Topic { get; set; }
-      
-        
+              
     }
 }
