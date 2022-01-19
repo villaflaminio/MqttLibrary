@@ -14,12 +14,12 @@ namespace MqttSubscriber.repository
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite("Data Source=Mqtt.db;");
+            optionsBuilder.UseSqlite("Data Source=C:\\work_space\\c#\\MqttLibrary\\MqttLibrary\\Mqtt.db;");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<MessageMqtt>().ToTable("MessageMqtt");
+            modelBuilder.Entity<MessageMqtt>().ToTable("Messages");
             
         }
 

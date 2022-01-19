@@ -12,6 +12,8 @@ namespace MqttLibrary.Publisher
 {
     public class Publisher
     {
+        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         public static async void Run()
 
         {
@@ -26,24 +28,28 @@ namespace MqttLibrary.Publisher
             client.UseConnectedHandler(e =>
             {
                 Console.WriteLine("publisher connected to broker");
+                log.Debug("publisher connected to broker");
             });
             client.UseDisconnectedHandler(e =>
             {
-                Console.WriteLine("Disconnect");
+                Console.WriteLine(mqttFactory.GetHashCode + "Disconnect");
+                log.Debug(mqttFactory.GetHashCode + "Disconnect");
             });
 
-            client.ConnectAsync(otions);
+            await client.ConnectAsync(otions);
 
             while (!client.IsConnected)
             {
                 Task.Delay(10).Wait();
-                Console.WriteLine("Aspettando il broker");
+                Console.WriteLine(mqttFactory.GetHashCode + "Disconnect");
+                log.Debug(mqttFactory.GetHashCode + "Disconnect");
             }
 
             for (int i = 0; i < 5; i++)
             {
                 Console.WriteLine("Invio " + i);
-                await PublishMessageAsync(client, i);
+                log.Info("Invio " + i);
+                PublishMessageAsync(client, i);
                 Task.Delay(500).Wait();
 
               // PublishMessageAsync(client, i);

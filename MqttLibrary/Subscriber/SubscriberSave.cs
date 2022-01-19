@@ -14,6 +14,7 @@ namespace MqttLibrary.Subscriber
 {
     public class SubscriberSave
     {
+
         public static void Run()
         {
             var db = new Repository();
@@ -28,16 +29,18 @@ namespace MqttLibrary.Subscriber
 
             client.UseConnectedHandler(e =>
             {
-                Console.WriteLine("connected to broker");
+                
+                Console.WriteLine(mqttFactory.GetHashCode + "Disconnect");
+
                 var topicFilter = new TopicFilterBuilder()
                 .WithTopic("flaminio")
-                .Build();
+                .Build(); 
                 client.SubscribeAsync(topicFilter);
 
             });
             client.UseDisconnectedHandler(e =>
             {
-                Console.WriteLine("Disconnect");
+                Console.WriteLine(mqttFactory.GetHashCode + "Disconnect");
             });
 
             client.UseApplicationMessageReceivedHandler(e =>
@@ -46,7 +49,7 @@ namespace MqttLibrary.Subscriber
                 db.Messages.Add(message);
 
                 Console.WriteLine("--- Save message ---" + message);
-               
+
                 db.SaveChanges();
 
                 //Console.WriteLine($"Ricevuto: {Encoding.UTF8.GetString(e.ApplicationMessage.Payload)}");
